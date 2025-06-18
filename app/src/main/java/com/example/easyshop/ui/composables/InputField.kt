@@ -10,6 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 
@@ -20,7 +22,8 @@ fun InputField(
     onValueChange: (String) -> Unit,
     icon: ImageVector,
     placeholder: String,
-    keyboardType: KeyboardType
+    keyboardType: KeyboardType,
+    isPassword: Boolean = false
 ) {
     Text(label, modifier = Modifier.fillMaxWidth(), fontSize = 16.sp)
     OutlinedTextField(
@@ -30,7 +33,8 @@ fun InputField(
         leadingIcon = { Icon(imageVector = icon, contentDescription = null) },
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = keyboardType)
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+        visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None
     )
 }
 

@@ -82,7 +82,8 @@ fun LoginScreen(navController: NavController) {
             { password = it },
             Icons.Default.Lock,
             "******",
-            KeyboardType.Email
+            KeyboardType.Email,
+            isPassword = true
         )
         Spacer(Modifier.height(35.dp))
         // Login Button
