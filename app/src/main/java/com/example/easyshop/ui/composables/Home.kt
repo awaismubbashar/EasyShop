@@ -32,9 +32,9 @@ fun Home() {
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Name: ${user.name}")
+            Text(text = "Name: ${user?.name}")
             Spacer(Modifier.height(20.dp))
-            Text(text = "Email: ${user.email}")
+            Text(text = "Email: ${user?.email}")
         }
     }
 }
