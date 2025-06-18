@@ -3,6 +3,7 @@ package com.example.easyshop.ui.composables
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -22,7 +23,7 @@ fun InputField(
     keyboardType: KeyboardType
 ) {
     Text(label, modifier = Modifier.fillMaxWidth(), fontSize = 16.sp)
-    TextField(
+    OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
         placeholder = { Text(placeholder) },

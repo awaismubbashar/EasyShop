@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -50,7 +51,7 @@ fun LoginScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(20.dp)
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -59,7 +60,8 @@ fun LoginScreen(navController: NavController) {
             "Login",
             style = TextStyle(
                 fontSize = 30.sp,
-                color = Color.Black
+                color = Color.Black,
+                fontWeight = FontWeight.Bold
             )
         )
         // Email Textview
@@ -92,20 +94,20 @@ fun LoginScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
+//            colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
         ) {
-            Text("Login")
+            Text("Login", fontSize = 19.sp)
         }
         Spacer(Modifier.height(10.dp))
         Box(
             modifier = Modifier
                 .fillMaxWidth(),
-            contentAlignment = Alignment.CenterEnd
+            contentAlignment = Alignment.Center
         ) {
             Text(
                 text = "Don't have an account? Register",
                 modifier = Modifier.clickable {
-                    navController.navigate("register") {
+                    navController.navigate("registration") {
                         popUpTo("login") { inclusive = true }
                     }
                 },

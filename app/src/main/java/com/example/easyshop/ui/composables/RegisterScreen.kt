@@ -1,6 +1,5 @@
 package com.example.easyshop.ui.composables
 
-import android.util.Patterns
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -30,6 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,7 +54,7 @@ fun RegisterScreen(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(20.dp)
             .verticalScroll(rememberScrollState()),
     ) {
         Box(
@@ -64,22 +65,12 @@ fun RegisterScreen(navController: NavController) {
                 "SignUp",
                 style = TextStyle(
                     fontSize = 30.sp,
-                    color = Color.Black
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold
                 )
             )
         }
         Spacer(Modifier.height(30.dp))
-
-        InputField(
-            "Enter Email",
-            email,
-            { email = it },
-            Icons.Default.Email,
-            "example@gmail.com",
-            KeyboardType.Email
-        )
-        Spacer(Modifier.height(15.dp))
-
         InputField(
             "Enter Name",
             name,
@@ -89,7 +80,15 @@ fun RegisterScreen(navController: NavController) {
             KeyboardType.Text
         )
         Spacer(Modifier.height(15.dp))
-
+        InputField(
+            "Enter Email",
+            email,
+            { email = it },
+            Icons.Default.Email,
+            "example@gmail.com",
+            KeyboardType.Email
+        )
+        Spacer(Modifier.height(15.dp))
         InputField(
             "Enter Password",
             password,
@@ -99,7 +98,6 @@ fun RegisterScreen(navController: NavController) {
             KeyboardType.Password
         )
         Spacer(Modifier.height(35.dp))
-
         Button(
             onClick = {
                 if (context.validateInputs(name = name, password = password, email = email)) {
@@ -108,10 +106,13 @@ fun RegisterScreen(navController: NavController) {
                         email = email,
                         password = password,
                         onSuccess = {
-                            Toast.makeText(context, "Registration Successful", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Registration Successful", Toast.LENGTH_SHORT)
+                                .show()
                             // ✅ Navigate to LoginScreen
                             navController.navigate("login") {
-                                popUpTo("registration") { inclusive = true } // Optional: clears back stack
+                                popUpTo("registration") {
+                                    inclusive = true
+                                } // Optional: clears back stack
                             }
                         },
                         onError = { message ->
@@ -123,15 +124,15 @@ fun RegisterScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
+//            colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
         ) {
-            Text("Register")
+            Text("Register", fontSize = 19.sp)
         }
         Spacer(Modifier.height(10.dp))
         Box(
             modifier = Modifier
                 .fillMaxWidth(),
-            contentAlignment = Alignment.CenterEnd
+            contentAlignment = Alignment.Center
         ) {
             Text(
                 text = "Already have an account? Login",
