@@ -6,12 +6,14 @@ import com.example.easyshop.model.UserData
 import com.example.easyshop.utils.UserDataStore
 import com.example.registrationcompose.utils.DataStoreUtils
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.log
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
@@ -19,8 +21,13 @@ class RegisterViewModel @Inject constructor(
     private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
 
-    private val _user = MutableStateFlow(UserData("", ""))
-    val user: StateFlow<UserData> = _user
+//    private val firestore = Firebase.firestore
+    val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+//    private val _user = MutableStateFlow(UserData("", "", ""))
+//    val user: StateFlow<UserData> = _user
+
+    private val _user = MutableStateFlow<UserData?>(null)
+    val user: StateFlow<UserData?> = _user
 
     init {
         getUser()
@@ -36,13 +43,24 @@ class RegisterViewModel @Inject constructor(
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    val uid = task.result?.user?.uid
                     // Save to DataStore
                     viewModelScope.launch {
                         DataStoreUtils.saveData(userDataStore.dataStore, "name", name)
                         DataStoreUtils.saveData(userDataStore.dataStore, "email", email)
-                        DataStoreUtils.saveData(userDataStore.dataStore, "password", password)
+                        DataStoreUtils.saveData(userDataStore.dataStore, "uid", uid)
                     }
                     onSuccess()
+
+                    val userModel = UserData(uid!!, name, email)
+                    firestore.collection("users").document(uid).set(userModel)
+                        .addOnCompleteListener {
+                            if(it.isSuccessful) {
+                                onSuccess()
+                            } else {
+                                onError(task.exception?.message ?: "Registration failed")
+                            }
+                        }
                 } else {
                     onError(task.exception?.message ?: "Registration failed")
                 }
@@ -70,7 +88,8 @@ class RegisterViewModel @Inject constructor(
         viewModelScope.launch {
             val name = DataStoreUtils.getData(userDataStore.dataStore, "name", "").first()
             val email = DataStoreUtils.getData(userDataStore.dataStore, "email", "").first()
-            _user.value = UserData(name, email)
+            val uid = DataStoreUtils.getData(userDataStore.dataStore, "uid", "").first()
+            _user.value = UserData(uid, name, email)
         }
     }
 

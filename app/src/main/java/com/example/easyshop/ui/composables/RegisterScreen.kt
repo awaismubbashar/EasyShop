@@ -98,7 +98,8 @@ fun RegisterScreen(navController: NavController) {
             { password = it },
             Icons.Default.Lock,
             "******",
-            KeyboardType.Password
+            KeyboardType.Password,
+            isPassword = true
         )
         Spacer(Modifier.height(35.dp))
         Button(
