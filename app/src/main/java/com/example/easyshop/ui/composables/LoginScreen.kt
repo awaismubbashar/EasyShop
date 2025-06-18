@@ -3,7 +3,6 @@ package com.example.easyshop.ui.composables
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,13 +11,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -47,6 +47,7 @@ fun LoginScreen(navController: NavController) {
     var password by remember { mutableStateOf("") }
     val context = LocalContext.current
     val viewModel: RegisterViewModel = hiltViewModel()
+    var isLoading by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -88,7 +89,23 @@ fun LoginScreen(navController: NavController) {
         Button(
             onClick = {
                 if (context.validateLoginInput(email = email, password = password)) {
-                    onLogin(email, password, context, viewModel, navController)
+                    isLoading = true
+                    viewModel.loginUser(
+                        email = email,
+                        password = password,
+                        onSuccess = {
+                            isLoading = false
+                            Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show()
+                            // Navigate to home or next screen
+                            navController.navigate("home") {
+                                popUpTo("login") { inclusive = true }
+                            }
+                        },
+                        onError = { message ->
+                            isLoading = false
+                            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                        }
+                    )
                 }
             },
             modifier = Modifier
@@ -96,7 +113,16 @@ fun LoginScreen(navController: NavController) {
                 .height(50.dp),
 //            colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
         ) {
-            Text("Login", fontSize = 19.sp)
+            if (isLoading) {
+                CircularProgressIndicator(
+                    color = Color.White,
+                    strokeWidth = 2.dp,
+                    modifier = Modifier
+                        .size(24.dp)
+                )
+            } else {
+                Text("Login", fontSize = 19.sp)
+            }
         }
         Spacer(Modifier.height(10.dp))
         Box(
@@ -118,24 +144,6 @@ fun LoginScreen(navController: NavController) {
 
     }
 }
-
-fun onLogin(email: String, password: String, context: Context, viewModel: RegisterViewModel, navController: NavController) {
-    viewModel.loginUser(
-        email = email,
-        password = password,
-        onSuccess = {
-            Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show()
-            // Navigate to home or next screen
-            navController.navigate("home") {
-                popUpTo("login") { inclusive = true }
-            }
-        },
-        onError = { message ->
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-        }
-    )
-}
-
 
 @Preview(showBackground = true)
 @Composable

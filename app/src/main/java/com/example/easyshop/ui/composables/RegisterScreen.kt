@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -18,6 +19,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -48,6 +50,7 @@ fun RegisterScreen(navController: NavController) {
     var password by remember { mutableStateOf("") }
     val context = LocalContext.current
     val registerViewModel: RegisterViewModel = hiltViewModel()
+    var isLoading by remember { mutableStateOf(false) }
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -76,7 +79,7 @@ fun RegisterScreen(navController: NavController) {
             name,
             { name = it },
             Icons.Default.AccountCircle,
-            "Awais",
+            "Joseph",
             KeyboardType.Text
         )
         Spacer(Modifier.height(15.dp))
@@ -85,7 +88,7 @@ fun RegisterScreen(navController: NavController) {
             email,
             { email = it },
             Icons.Default.Email,
-            "example@gmail.com",
+            "email@mail.com",
             KeyboardType.Email
         )
         Spacer(Modifier.height(15.dp))
@@ -101,11 +104,13 @@ fun RegisterScreen(navController: NavController) {
         Button(
             onClick = {
                 if (context.validateInputs(name = name, password = password, email = email)) {
+                    isLoading = true
                     registerViewModel.registerUser(
                         name = name,
                         email = email,
                         password = password,
                         onSuccess = {
+                            isLoading = false
                             Toast.makeText(context, "Registration Successful", Toast.LENGTH_SHORT)
                                 .show()
                             // ✅ Navigate to LoginScreen
@@ -116,6 +121,7 @@ fun RegisterScreen(navController: NavController) {
                             }
                         },
                         onError = { message ->
+                            isLoading = false
                             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                         }
                     )
@@ -126,7 +132,16 @@ fun RegisterScreen(navController: NavController) {
                 .height(50.dp),
 //            colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
         ) {
-            Text("Register", fontSize = 19.sp)
+            if (isLoading) {
+                CircularProgressIndicator(
+                    color = Color.White,
+                    strokeWidth = 2.dp,
+                    modifier = Modifier
+                        .size(24.dp)
+                )
+            } else {
+                Text("Register", fontSize = 19.sp)
+            }
         }
         Spacer(Modifier.height(10.dp))
         Box(
