@@ -1,7 +1,10 @@
 package com.example.easyshop.ui.composables
 
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
@@ -20,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.easyshop.ui.pages.CartPage
 import com.example.easyshop.ui.pages.FavoritePage
@@ -29,8 +33,8 @@ import com.example.easyshop.viewmodel.RegisterViewModel
 
 @Composable
 fun Home() {
-    val registerViewModel: RegisterViewModel = hiltViewModel()
-    val user by registerViewModel.user.collectAsState()
+//    val registerViewModel: RegisterViewModel = hiltViewModel()
+//    val user by registerViewModel.user.collectAsState()
     var selectedIndex by remember { mutableStateOf(0) }
     val navigationItemsList = listOf(
         NavigationItem(
@@ -51,32 +55,38 @@ fun Home() {
         ),
     )
 
-    Scaffold(
-        bottomBar = {
-            NavigationBar {
-                navigationItemsList.forEachIndexed { index, item ->
-                    NavigationBarItem(
-                        selected = index == selectedIndex,
-                        onClick = {
-                            selectedIndex = index
-                        },
-                        icon = {
-                            Icon(
-                                imageVector = item.icon,
-                                contentDescription = item.title
-                            )
-                        },
-                        label = { Text(item.title) }
-                    )
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+    ) {
+        Scaffold(
+            bottomBar = {
+                NavigationBar {
+                    navigationItemsList.forEachIndexed { index, item ->
+                        NavigationBarItem(
+                            selected = index == selectedIndex,
+                            onClick = {
+                                selectedIndex = index
+                            },
+                            icon = {
+                                Icon(
+                                    imageVector = item.icon,
+                                    contentDescription = item.title
+                                )
+                            },
+                            label = { Text(item.title) }
+                        )
+                    }
                 }
             }
+        ) { innerPadding ->
+            ContentScreen(
+                modifier = Modifier
+                    .padding(innerPadding),
+                selectedIndex = selectedIndex
+            )
         }
-    ) { innerPadding ->
-        ContentScreen(
-            modifier = Modifier
-                .padding(innerPadding),
-            selectedIndex = selectedIndex
-        )
     }
 
 
@@ -90,10 +100,15 @@ private fun ContentScreen(modifier: Modifier = Modifier, selectedIndex: Int) {
         2 -> CartPage(modifier)
         3 -> ProfilePage(modifier)
     }
-    Text(text = "Name: ")
 }
 
 data class NavigationItem(
     val title: String,
     val icon: ImageVector
 )
+
+@Preview(showBackground = true)
+@Composable
+fun HomePreview() {
+    Home()
+}
