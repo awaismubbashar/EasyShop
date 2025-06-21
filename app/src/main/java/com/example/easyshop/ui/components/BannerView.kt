@@ -24,7 +24,7 @@ import com.tbuonomo.viewpagerdotsindicator.compose.model.DotGraphic
 import com.tbuonomo.viewpagerdotsindicator.compose.type.ShiftIndicatorType
 
 @Composable
-fun BannerView(modifier: Modifier) {
+fun BannerView() {
     val firestore = FirebaseFirestore.getInstance()
     var bannerUrls by remember {
         mutableStateOf<List<String>>(emptyList())
@@ -42,7 +42,7 @@ fun BannerView(modifier: Modifier) {
     })
 
     if (bannerUrls.isNotEmpty()) {
-        Column(modifier = modifier) {
+        Column(modifier = Modifier.fillMaxWidth()) {
             HorizontalPager(
                 state = pagerState, pageSpacing = 24.dp, modifier = Modifier
                     .fillMaxWidth()
