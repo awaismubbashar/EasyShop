@@ -43,32 +43,27 @@ fun CategoryProductsPage(modifier: Modifier, categoryId: String?) {
             }
     }
 
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(vertical = 10.dp, horizontal = 10.dp)
+    LazyColumn(
+        modifier = Modifier
+            .padding(vertical = 10.dp, horizontal = 15.dp)
             .padding(WindowInsets.systemBars.asPaddingValues())
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            itemsIndexed(productsList.value.chunked(2)) { index, item ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .then(
-                            if (index == 0) Modifier.padding(top = 5.dp) else Modifier
-                        ),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    item.forEach {
-                        ProductItemView(modifier = Modifier.weight(1f), product = it)
-                    }
-                    if (item.size == 1) {
-                        Spacer(Modifier.weight(1f))
-                    }
+        itemsIndexed(productsList.value.chunked(2)) { index, item ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .then(
+                        if (index == 0) Modifier.padding(top = 5.dp) else Modifier
+                    ),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                item.forEach {
+                    ProductItemView(modifier = Modifier.weight(1f), product = it)
+                }
+                if (item.size == 1) {
+                    Spacer(Modifier.weight(1f))
                 }
             }
         }
