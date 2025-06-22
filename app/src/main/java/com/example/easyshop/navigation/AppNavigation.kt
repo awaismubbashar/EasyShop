@@ -34,7 +34,7 @@ fun AppNavigation(modifier: Modifier = Modifier) {
         }
         composable("category-products/{categoryId}") {
             val categoryId = it.arguments?.getString("categoryId")
-            CategoryProductsPage(categoryId)
+            CategoryProductsPage(modifier, categoryId)
         }
     }
 }

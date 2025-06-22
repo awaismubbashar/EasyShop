@@ -30,7 +30,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 @Composable
 fun CategoriesView() {
 
-    var categories = remember {
+    val categories = remember {
         mutableStateOf<List<CategoriesData>>(emptyList())
     }
     LaunchedEffect(Unit) {
