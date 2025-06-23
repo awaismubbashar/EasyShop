@@ -32,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -40,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.easyshop.model.ProductModel
+import com.example.easyshop.utils.AppUtils
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tbuonomo.viewpagerdotsindicator.compose.DotsIndicator
 import com.tbuonomo.viewpagerdotsindicator.compose.model.DotGraphic
@@ -48,6 +50,7 @@ import com.tbuonomo.viewpagerdotsindicator.compose.type.ShiftIndicatorType
 @Composable
 fun ProductDetailPage(modifier: Modifier, productId: String) {
 
+    val context = LocalContext.current
     var product by remember {
         mutableStateOf(ProductModel())
     }
@@ -137,7 +140,9 @@ fun ProductDetailPage(modifier: Modifier, productId: String) {
 
         Spacer(modifier = Modifier.height(20.dp))
         Button(
-            onClick = {},
+            onClick = {
+                AppUtils.addItemToCart(productId, context = context)
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(45.dp)
