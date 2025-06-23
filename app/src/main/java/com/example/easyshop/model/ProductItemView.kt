@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -41,7 +42,7 @@ fun ProductItemView(modifier: Modifier, product: ProductModel) {
         colors = CardDefaults.cardColors(containerColor = Color(0xFFFDFDFD)),
 //        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         onClick = {
-//            GlobalNavigation.navController.navigate("category-products/" + item.id)
+            GlobalNavigation.navController.navigate("product-detail/" + product.id)
         }
     ) {
         Column(
@@ -78,6 +79,7 @@ fun ProductItemView(modifier: Modifier, product: ProductModel) {
                         textDecoration = TextDecoration.LineThrough
                     )
                 )
+                Spacer(modifier = Modifier.width(5.dp))
                 Text(
                     "$" + product.actualPrice,
                     textAlign = TextAlign.Center,
