@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.easyshop.model.ProductModel
 import com.example.easyshop.navigation.GlobalNavigation
-import com.example.easyshop.utils.AppUtils
+import com.example.easyshop.utils.CartUtils
 
 @Composable
 fun ProductItemView(modifier: Modifier, product: ProductModel) {
@@ -87,7 +87,7 @@ fun ProductItemView(modifier: Modifier, product: ProductModel) {
                 )
                 Spacer(Modifier.weight(1f))
                 IconButton(onClick = {
-                    AppUtils.addItemToCart(product.id, context = context)
+                    CartUtils.addItemToCart(product.id, context = context)
                 }) {
                     Icon(
                         imageVector = Icons.Default.ShoppingCart,

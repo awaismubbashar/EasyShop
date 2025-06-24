@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.easyshop.model.ProductModel
-import com.example.easyshop.utils.AppUtils
+import com.example.easyshop.utils.CartUtils
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tbuonomo.viewpagerdotsindicator.compose.DotsIndicator
 import com.tbuonomo.viewpagerdotsindicator.compose.model.DotGraphic
@@ -141,7 +141,7 @@ fun ProductDetailPage(modifier: Modifier, productId: String) {
         Spacer(modifier = Modifier.height(20.dp))
         Button(
             onClick = {
-                AppUtils.addItemToCart(productId, context = context)
+                CartUtils.addItemToCart(productId, context = context)
             },
             modifier = Modifier
                 .fillMaxWidth()

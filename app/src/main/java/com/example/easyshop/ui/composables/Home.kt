@@ -20,6 +20,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -35,7 +36,7 @@ import com.example.easyshop.viewmodel.RegisterViewModel
 fun Home() {
 //    val registerViewModel: RegisterViewModel = hiltViewModel()
 //    val user by registerViewModel.user.collectAsState()
-    var selectedIndex by remember { mutableStateOf(0) }
+    var selectedIndex by rememberSaveable { mutableStateOf(0) }
     val navigationItemsList = listOf(
         NavigationItem(
             title = "Home",
