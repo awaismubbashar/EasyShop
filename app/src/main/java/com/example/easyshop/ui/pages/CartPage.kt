@@ -4,10 +4,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -18,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.easyshop.model.UserData
+import com.example.easyshop.navigation.GlobalNavigation
 import com.example.easyshop.ui.components.CartItemView
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -58,11 +61,20 @@ fun CartPage(modifier: Modifier = Modifier) {
         Spacer(Modifier.height(20.dp))
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().weight(1f)
         ) {
             items(userData.value.cartItems.toList(), key = { it.first }) { (productId, quantity) ->
                 CartItemView(modifier, productId, quantity)
             }
+        }
+        Spacer(Modifier.height(20.dp))
+        Button(onClick = {
+            GlobalNavigation.navController.navigate("checkout")
+        }, modifier = Modifier
+            .fillMaxWidth()
+            .height(45.dp)
+        ) {
+            Text("Checkout", fontSize = 16.sp)
         }
     }
 
