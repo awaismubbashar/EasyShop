@@ -25,7 +25,7 @@ import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
-fun HeaderView(modifier: Modifier) {
+fun HeaderView(onLoaded: () -> Unit = {}) {
     var name by remember { mutableStateOf("") }
     val firestore = FirebaseFirestore.getInstance()
 
@@ -36,8 +36,9 @@ fun HeaderView(modifier: Modifier) {
                 .document(it).get()
                 .addOnCompleteListener { task ->
                     name = task.result.get("name").toString().split(" ")[0]
+                    onLoaded()
                 }
-        }
+        }?: onLoaded() //
     }
 
     Row (
@@ -63,10 +64,4 @@ fun HeaderView(modifier: Modifier) {
             Icon(imageVector = Icons.Default.Search, contentDescription = "Search")
         }
     }
-}
-
-@Preview
-@Composable
-fun HeaderViewPreview() {
-    HeaderView(modifier = Modifier)
 }

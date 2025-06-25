@@ -24,7 +24,7 @@ import com.tbuonomo.viewpagerdotsindicator.compose.model.DotGraphic
 import com.tbuonomo.viewpagerdotsindicator.compose.type.ShiftIndicatorType
 
 @Composable
-fun BannerView() {
+fun BannerView(modifier: Modifier = Modifier, onLoaded: () -> Unit) {
     val firestore = FirebaseFirestore.getInstance()
     var bannerUrls by remember {
         mutableStateOf<List<String>>(emptyList())
@@ -35,6 +35,7 @@ fun BannerView() {
             .document("banners").get()
             .addOnCompleteListener { task ->
                 bannerUrls = task.result.get("urls") as List<String>
+                onLoaded()
             }
     }
     val pagerState = rememberPagerState(pageCount = {
