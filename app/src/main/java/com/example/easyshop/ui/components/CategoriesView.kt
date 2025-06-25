@@ -28,7 +28,7 @@ import com.example.easyshop.navigation.GlobalNavigation
 import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
-fun CategoriesView() {
+fun CategoriesView(modifier: Modifier = Modifier, onLoaded: () -> Unit) {
 
     val categories = remember {
         mutableStateOf<List<CategoriesData>>(emptyList())
@@ -40,6 +40,7 @@ fun CategoriesView() {
                 categories.value = task.result.documents.mapNotNull { doc ->
                     doc.toObject(CategoriesData::class.java)
                 }
+                onLoaded()
             }
     }
 
